@@ -1,32 +1,63 @@
 @import model.Hotel
 @(searchResults: Seq[Hotel])
 
-@gmapsLink(hotel: Hotel) = {
-    import hotel._, coordinates._
-    s"http://maps.google.com/?q=$name near $lat,$long"
-}
 
-<div id="bookme-popup" title="book your hotel now">
-    <img id="bookme-popup-img" />
-    <span>Do you want to book this hotel?</span>
-    <button id="bookme-popup-yes">Yes</button>
-    <button id="bookme-popup-no">No</button>
+ <!-- Modal -->
+<div class="modal fade" id="bookme-popup" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <!-- Custom title -->
+                <h4 class="modal-title" id="mapModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <img id="bookme-popup-img"/>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <table class="table">
     <tr>
         <th>Name</th>
-        <th>Location</th>
         <th>Images</th>
     </tr>
     @for(hotel <- searchResults) {
         <tr>
             <td>@hotel.name</td>
-            <td><a href="@gmapsLink(hotel)">Map</a></td>
             <td>
-                <a onclick="displayPopup('@hotel.heroImage')"><img height="200px" src="@hotel.heroImage" /></a>
+            @for((image, index) <- hotel.heroImage.zipWithIndex) {
+
+                @if(index == 0){
+                    <a onclick="displayPopup('@image', '@hotel.name')"><img height="200px" src="@image" /></a>
+                }  else {
+                    <img height="150px" src="@image" />
+                }
+            }
             </td>
         </tr>
     }
+
+        <!-- Modal -->
+    <div class="modal fade" id="heroImageModal" role="dialog">
+        <div class="modal-dialog">
+
+                <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <img id="heroImage">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Book</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </table>

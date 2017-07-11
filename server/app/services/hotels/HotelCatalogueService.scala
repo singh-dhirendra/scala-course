@@ -29,7 +29,7 @@ class HotelCatalogueService {
       id,
       (json \ "name").as[String],
       Coordinates(lat, long),
-      largeImages.take(1).map("http://exp.cdn-hotels.com"+_).head,
+      largeImages.take(3).map("http://exp.cdn-hotels.com"+_),
       description
     )
   }.toMap
