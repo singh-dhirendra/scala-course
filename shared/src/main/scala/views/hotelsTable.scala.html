@@ -6,6 +6,14 @@
     s"http://maps.google.com/?q=$name near $lat,$long"
 }
 
+<div id="bookme-popup" title="book your hotel now">
+    <img id="bookme-popup-img" />
+    <span>Do you want to book this hotel?</span>
+    <button id="bookme-popup-yes">Yes</button>
+    <button id="bookme-popup-no">No</button>
+</div>
+
+
 <table class="table">
     <tr>
         <th>Name</th>
@@ -17,9 +25,7 @@
             <td>@hotel.name</td>
             <td><a href="@gmapsLink(hotel)">Map</a></td>
             <td>
-            @for(image <- hotel.images) {
-                <img height="200px" src="@image" />
-            }
+                <a onclick="displayPopup('@hotel.heroImage')"><img height="200px" src="@hotel.heroImage" /></a>
             </td>
         </tr>
     }
